@@ -1,13 +1,15 @@
 package edu.curtin.app;
 
 import java.io.*;
+import java.util.*;
 
-public class IncludeCriteria 
+public class IncludeCriteria implements SearchCriteria
 {
-    public boolean include(boolean pIncludes)
+    public void include(Map<Integer, String> pLineNumberMatches)
     {
-        if(pIncludes == true)
-            return true;
-        return false;
+       for(Map.Entry<Integer, String> line : pLineNumberMatches.entrySet())
+       {
+            System.out.print(line.getKey() + ". " + line.getValue());
+       }
     }
 }
