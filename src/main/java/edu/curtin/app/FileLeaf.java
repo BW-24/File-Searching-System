@@ -6,24 +6,22 @@ import java.util.*;
 public class FileLeaf extends FileSystemComponent
 {
     public File file;
-    public Map<Integer, String> contents;
+    public Map<Integer, String> matchingCriteria;
 
     public FileLeaf(File pFile) 
     { 
         file = pFile;
-        contents = null;
+        matchingCriteria = null;
     }
 
     public File getFile() { return file; }
 
     @Override 
-    public FileSystemComponent find(String pCriteria)
+    public void find(String pCriteria) //should probs be findMatches
     {
         SearchFileSystem searchFileSystem = new SearchFileSystem();
         Map<Integer, String> filteredSearchResults = searchFileSystem.search(file, pCriteria);
         
-        this.contents = filteredSearchResults;
-
-        return this;
+        this.matchingCriteria = filteredSearchResults; //apply searchresults to matching criteria field of file object
     }
 }

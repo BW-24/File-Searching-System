@@ -5,5 +5,5 @@ public abstract class FileSystemComponent
 {
     protected File file;
     
-    public FileSystemComponent find(String pCriteria);
+    public  abstract void find(String pCriteria);
 }
