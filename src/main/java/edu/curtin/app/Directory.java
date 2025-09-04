@@ -1,12 +1,12 @@
 package edu.curtin.app;
+
 import java.io.File;
 import java.util.*;
 
 public class Directory extends FileSystemComponent
 {
     public File directory;
-
-    public List<FileSystemComponent> fileTree = new ArrayList<>();
+    List<FileSystemComponent> fileTree = new ArrayList<>();
 
     public Directory(File pDirectory) { directory = pDirectory; }
 
@@ -18,7 +18,7 @@ public class Directory extends FileSystemComponent
     //The application must take an optional command-line parameter, which must be the name of a directory. 
     // If no directory name is given, then the current directory “.” must be used instead.
 
-    public File[] loadContent(String pDirectory)
+    public List<FileSystemComponent> loadContent(String pDirectory) //return FileSysComponent??
     {
         //error/exc check empty? what about empty subdirectories?
 
@@ -28,7 +28,7 @@ public class Directory extends FileSystemComponent
         //Store in array
         File[] dirContents = dir.listFiles();
         //null check
-        if (dirContents == null) return new File[0];
+        if (dirContents == null) return null;
         //iterate through
         for(File file : dirContents)
         { 
@@ -45,7 +45,7 @@ public class Directory extends FileSystemComponent
                 fileTree.add(fileLeaf);
             }
         }
-        return dirContents;
+        return fileTree;
     } 
 
     @Override 
@@ -54,10 +54,7 @@ public class Directory extends FileSystemComponent
         for(FileSystemComponent fileSystemComponent : fileTree)
         {
             FileSystemComponent found = fileSystemComponent.find(pCriteria); // Recurse
-            if(found != null)
-            {
-                return found;
-            }
+            if(found != null) { return found; }
         }
         return null;
     }

@@ -5,30 +5,33 @@ import java.io.*;
 
 public class SearchFileSystem
 {
-    private Map<String, SearchCriteria> SearchStrategies= new HashMap<>();
+    private Map<String, SearchStrategy> SearchStrategies= new HashMap<>();
+    private Map<String, FilterStrategy> FilterStrategies= new HashMap<>();
 
     public SearchFileSystem()
     {
         SearchStrategies.put("t", new TextCriteria());
         SearchStrategies.put("r", new RegexCriteria());
-        SearchStrategies.put("+", new IncludeCriteria());
-        SearchStrategies.put("-", new ExcludeCriteria());
+        FilterStrategies.put("+", new IncludeFilter());
+        FilterStrategies.put("-", new ExcludeFilter());
     }
 
-    public void Search(File file, String pSearchCriteria)
+    public Map<Integer, String> search(File file, String pSearchCriteria)
     {
-        String incOrExc = Character.toString(pSearchCriteria.charAt(1));
-        String textOrRegex = Character.toString(pSearchCriteria.charAt(3));
+        String incOrExc = Character.toString(pSearchCriteria.charAt(0));
+        String textOrRegex = Character.toString(pSearchCriteria.charAt(2));
 
-        SearchCriteria sc1 = SearchStrategies.get(incOrExc);
-        SearchCriteria sc2 = SearchStrategies.get(textOrRegex);
+        SearchStrategy ss = SearchStrategies.get(textOrRegex);
+        FilterStrategy fs = FilterStrategies.get(incOrExc);
 
-        if(sc1 == null || sc2 == null)
+        if(ss == null || fs == null)
         {
             throw new IllegalArgumentException("Invalid Search Criteria");
         }
 
-        boolean getTextOrRegex = sc2.matchesCriteria(file, pSearchCriteria);
-        boolean incOrExcTextOrRegex = sc1.matchesCriteria(file, pSearchCriteria);
+        SearchResults getTextOrRegex = ss.matchesCriteria(file, pSearchCriteria);
+        Map<Integer, String> filteredSearchResults = fs.filter(getTextOrRegex);
+
+        return filteredSearchResults; //Map with lin num + text of searched and inc/exc results
     }
 }
