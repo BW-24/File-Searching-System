@@ -5,53 +5,55 @@ import java.util.*;
 
 public class DirectoryComposite extends FileSystemComponent
 {
+    //class fields
     public File directory;
+
     List<FileSystemComponent> fileTree = new ArrayList<>();
-
+    //setter
     public DirectoryComposite(File pDirectory) { directory = pDirectory; }
-
+    //getter
     public File getDirectory() { return directory; }
 
-    public void loadContent(String pDirectory) //return FileSysComponent??
+    //loads content from given root directory into system, turns dir into Directory objects, files into File objects
+    public void loadContent(String pDirectory) 
     {
-        //error/exc check empty? what about empty subdirectories?
 
         //Create file obj with built in class
         File dir = new File(pDirectory);
 
-        //Store in array
+        //Store dir contents in array
         File[] dirContents = dir.listFiles();
 
-        if(dirContents != null)
-            Arrays.sort(dirContents);
-        //null check
+        if(dirContents == null) { throw new IllegalStateException("Directory is empty."); } //stop program if directory is empty
+
+        Arrays.sort(dirContents);
     
         //iterate through
         for(File file : dirContents)
         { 
             if(file.isDirectory()) //if directory
             {
-                if (file.isDirectory() && !file.isHidden() && !file.getName().startsWith("."))
+                if (!file.isHidden() && !file.getName().startsWith(".")) //Check directory is not hidden
                 {
                     DirectoryComposite subDir = new DirectoryComposite(file); //create dir obj
                     fileTree.add(subDir); //add to filetree list
-                    subDir.loadContent(file.getAbsolutePath()); //recurse
-                    //fileTree.addAll(subDir.fileTree);
+                    subDir.loadContent(file.getAbsolutePath()); //recurse - into sub directories contents
                 }
             }
             else
             {
                 String name = file.getName().toLowerCase();
-                if (file.isFile() && (name.endsWith(".java") || name.endsWith(".txt") || name.endsWith(".csv")))
+                if (file.isFile() && (name.endsWith(".java") || name.endsWith(".txt") || name.endsWith(".csv"))) //maybe change
                 {  
-                    fileTree.add(new FileLeaf(file));
+                    fileTree.add(new FileLeaf(file)); //create file object
                 }
             }
         }
     } 
 
+    //composite find function, finds lines within directory that match criteria, recurses into file objects
     @Override 
-    public void find(String pCriteria)
+    public void find(String pCriteria) 
     {
         for(FileSystemComponent fileSystemComponent : fileTree)
         {
@@ -59,6 +61,7 @@ public class DirectoryComposite extends FileSystemComponent
         }
     }
 
+    //composite count function, returns count of matching lines in dir, recurses into file objects
     @Override
     public int count()
     {

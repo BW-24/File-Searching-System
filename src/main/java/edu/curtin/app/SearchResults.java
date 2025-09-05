@@ -2,6 +2,7 @@ package edu.curtin.app;
 
 import java.util.*;
 
+//Class to create SearchResults object - needed mainly for exclusion criteria, to store all lines and matched lines in the same object to then compare and exclude correct lines
 public class SearchResults 
 {
     List<String> allLines;  
@@ -13,15 +14,9 @@ public class SearchResults
         matches = pMatches;
     }
 
-    public List<String> getAllLines() 
-    {
-        return allLines;
-    }
+    public List<String> getAllLines() { return allLines; }
 
-    public Map<Integer, String> getMatches() 
-    {
-        return matches;
-    }
+    public Map<Integer, String> getMatches() { return matches; }
 
 
     

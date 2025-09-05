@@ -6,7 +6,7 @@ import java.util.*;
 
 public class TextCriteria implements SearchStrategy
 {
-    //returns the line num the txt is located on in an array
+    //Reads file object and returns a search result object with matching line and all lines.
     public SearchResults matchesCriteria(File file, String pCriteria)
     {
         String text = pCriteria.substring(4);
@@ -14,20 +14,21 @@ public class TextCriteria implements SearchStrategy
         try (BufferedReader reader = new BufferedReader(new FileReader(file)))
         {
             String line;
-            int lineCount = 1;
+            int lineNum = 1;
             List<String> allLines = new ArrayList<>();
             Map<Integer, String> lineMatches = new HashMap<>();
+            
             while((line = reader.readLine()) != null) 
             {
-                allLines.add(line);
-                if(line.contains(text))
+                allLines.add(line); //Store every line in file in allLines
+                if(line.contains(text)) //if line contains text (match) include it in lineMatches with lineNum and text
                 {
-                    lineMatches.put(lineCount, line);
+                    lineMatches.put(lineNum, line);
                 }
-                lineCount++; 
+                lineNum++; 
             }
             
-            SearchResults searchResults = new SearchResults(allLines, lineMatches);
+            SearchResults searchResults = new SearchResults(allLines, lineMatches); //create search results object and return it
 
             return searchResults;
         } catch (IOException e) 
