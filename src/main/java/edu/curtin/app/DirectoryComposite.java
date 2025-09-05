@@ -21,7 +21,9 @@ public class DirectoryComposite extends FileSystemComponent
 
         //Store in array
         File[] dirContents = dir.listFiles();
-        Arrays.sort(dirContents);
+
+        if(dirContents != null)
+            Arrays.sort(dirContents);
         //null check
     
         //iterate through
@@ -34,7 +36,7 @@ public class DirectoryComposite extends FileSystemComponent
                     DirectoryComposite subDir = new DirectoryComposite(file); //create dir obj
                     fileTree.add(subDir); //add to filetree list
                     subDir.loadContent(file.getAbsolutePath()); //recurse
-                    fileTree.addAll(subDir.fileTree);
+                    //fileTree.addAll(subDir.fileTree);
                 }
             }
             else
@@ -55,5 +57,16 @@ public class DirectoryComposite extends FileSystemComponent
         {
             fileSystemComponent.find(pCriteria); // Recurse
         }
+    }
+
+    @Override
+    public int count()
+    {
+        int size = 0;
+        for(FileSystemComponent fileSystemComponent : fileTree)
+        {
+            fileSystemComponent.count();
+        }
+        return size;
     }
 }

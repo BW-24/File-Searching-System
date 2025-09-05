@@ -17,7 +17,7 @@ public class App
         
         if(argv.length == 1)
         {
-            dir = argv[1];
+            dir = argv[0];
         }
         else
         {
@@ -29,32 +29,14 @@ public class App
         DirectoryComposite root = new DirectoryComposite(currentDir);
         root.loadContent(dir);
 
-        String criteria1 = "+ t Integer";
+        String criteria1 = "+ t class";
         String criteria2 = "+ r \"[^\"]*\"";
         String criteria3 = "- t File";
         String criteria4 = "- r \"[^\"]*\"";
 
-        root.find(criteria4);
+        root.find(criteria1);
 
-        for(FileSystemComponent file : root.fileTree)
-        {
-            if (file instanceof DirectoryComposite directory) 
-            {
-                System.out.println(directory.getDirectory().getName());
-            } 
-            else if (file instanceof FileLeaf leaf) 
-            {
-                System.out.println(leaf.getFile().getName());
-                if (leaf.matchingCriteria != null && !leaf.matchingCriteria.isEmpty()) 
-                {
-                    for (Map.Entry<Integer, String> entry : leaf.matchingCriteria.entrySet()) 
-                    {
-                        System.out.println(entry.getKey() + " " + entry.getValue());
-                    }
-                }
-            }
-        }
+        OutputShow.showLines(root, " ");
+        OutputCount.showCount(root," ");
     }
 }
-
-
