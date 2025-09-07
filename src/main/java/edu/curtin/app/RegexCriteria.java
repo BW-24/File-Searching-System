@@ -3,9 +3,11 @@ package edu.curtin.app;
 import java.io.*;
 import java.util.*;
 import java.util.regex.*;
+import java.util.logging.*;
 
 public class RegexCriteria implements SearchStrategy
 {
+    private static final Logger logger = Logger.getLogger(RegexCriteria.class.getName());
     //Reads file object and returns a search result object with matching line and all lines.
     public SearchResults matchesCriteria(File file, String pCriteria)
     {
@@ -28,12 +30,13 @@ public class RegexCriteria implements SearchStrategy
                 }
                 lineNumber++;
             }
-
+            logger.info(() -> "file read into system: Regex" + file.getName());
             SearchResults searchResults = new SearchResults(allLines, lineMatches); //Create search results object and return it 
 
             return searchResults;
         } catch (IOException e) 
         {
+            logger.severe("Error in file read: Regex");
             e.getMessage();
         }
         return null;

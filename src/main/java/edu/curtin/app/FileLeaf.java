@@ -2,10 +2,12 @@ package edu.curtin.app;
 
 import java.io.*;
 import java.util.*;
+import java.util.logging.*;
 
 //Leaf component of file system composite structure
 public class FileLeaf extends FileSystemComponent
 {
+    private static final Logger logger = Logger.getLogger(FileLeaf.class.getName());
     //class fields
     public File file;
     public Map<Integer, String> matchingCriteria;
@@ -24,11 +26,11 @@ public class FileLeaf extends FileSystemComponent
     //finds criteria matching lines by searching file objects, sets files matching criteria field to the results fom search; map with lineNum (key) and matching text (value)
     // also sets count of matching lines to each file object
     @Override 
-    public void find(String pCriteria) //should probs be findMatches
+    public void findInclusions(String pCriteria) 
     {
         SearchFileSystem searchFileSystem = new SearchFileSystem();
         Map<Integer, String> filteredSearchResults = searchFileSystem.search(file, pCriteria); //search
-        
+        logger.info(() -> "Searching through" + this.getFile().getName());
         this.matchingCriteria = filteredSearchResults; //apply searchresults to matching criteria field of file object
         this.setCount(); // apply count now that matching lines have been added to object
     }

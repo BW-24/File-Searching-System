@@ -2,12 +2,15 @@ package edu.curtin.app;
 
 import java.io.File;
 import java.util.*;
+import java.util.logging.*;
 
 public class DirectoryComposite extends FileSystemComponent
 {
     //class fields
     public File directory;
+    public int count;
 
+    private static final Logger logger = Logger.getLogger(DirectoryComposite.class.getName());
     List<FileSystemComponent> fileTree = new ArrayList<>();
     //setter
     public DirectoryComposite(File pDirectory) { directory = pDirectory; }
@@ -17,7 +20,6 @@ public class DirectoryComposite extends FileSystemComponent
     //loads content from given root directory into system, turns dir into Directory objects, files into File objects
     public void loadContent(String pDirectory) 
     {
-
         //Create file obj with built in class
         File dir = new File(pDirectory);
 
@@ -33,8 +35,9 @@ public class DirectoryComposite extends FileSystemComponent
         { 
             if(file.isDirectory()) //if directory
             {
-                if (!file.isHidden() && !file.getName().startsWith(".")) //Check directory is not hidden
+                if (!file.isHidden() && !file.getName().startsWith(".")) //dont inc hidden directories
                 {
+                    logger.info(() -> "loading" + file.getName() + "into system");
                     DirectoryComposite subDir = new DirectoryComposite(file); //create dir obj
                     fileTree.add(subDir); //add to filetree list
                     subDir.loadContent(file.getAbsolutePath()); //recurse - into sub directories contents
@@ -45,6 +48,7 @@ public class DirectoryComposite extends FileSystemComponent
                 String name = file.getName().toLowerCase();
                 if (file.isFile() && (name.endsWith(".java") || name.endsWith(".txt") || name.endsWith(".csv"))) //maybe change
                 {  
+                    logger.info(() -> "loading" + file.getName() + "into system");
                     fileTree.add(new FileLeaf(file)); //create file object
                 }
             }
@@ -53,11 +57,11 @@ public class DirectoryComposite extends FileSystemComponent
 
     //composite find function, finds lines within directory that match criteria, recurses into file objects
     @Override 
-    public void find(String pCriteria) 
+    public void findInclusions(String pCriteria) 
     {
         for(FileSystemComponent fileSystemComponent : fileTree)
         {
-            fileSystemComponent.find(pCriteria); // Recurse
+            fileSystemComponent.findInclusions(pCriteria); // Recurse
         }
     }
 
@@ -68,7 +72,7 @@ public class DirectoryComposite extends FileSystemComponent
         int size = 0;
         for(FileSystemComponent fileSystemComponent : fileTree)
         {
-            fileSystemComponent.count();
+            size += fileSystemComponent.count(); 
         }
         return size;
     }

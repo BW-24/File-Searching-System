@@ -2,10 +2,12 @@ package edu.curtin.app;
 
 import java.util.*;
 import java.io.*;
+import java.util.logging.*;
 
 //Context class of strategy pattern for searching, searches polymorphically depending on the criteria
 public class SearchFileSystem
 {
+    private static final Logger logger = Logger.getLogger(SearchFileSystem.class.getName());
     private Map<String, SearchStrategy> SearchStrategies= new HashMap<>();
     private Map<String, FilterStrategy> FilterStrategies= new HashMap<>();
 
@@ -31,6 +33,7 @@ public class SearchFileSystem
 
         if(ss == null || fs == null)
         {
+            logger.warning("Search or filter strategy are null");
             throw new IllegalArgumentException("Invalid Search Criteria");
         }
 
