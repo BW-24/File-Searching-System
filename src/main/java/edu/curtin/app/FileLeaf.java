@@ -26,7 +26,7 @@ public class FileLeaf extends FileSystemComponent
     //finds criteria matching lines by searching file objects, sets files matching criteria field to the results fom search; map with lineNum (key) and matching text (value)
     // also sets count of matching lines to each file object
     @Override 
-    public void findInclusions(String pCriteria) 
+    public void findInclusions(List<String> pCriteria) 
     {
         SearchFileSystem searchFileSystem = new SearchFileSystem();
         Map<Integer, String> filteredSearchResults = searchFileSystem.search(file, pCriteria); //search

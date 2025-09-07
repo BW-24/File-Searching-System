@@ -7,36 +7,22 @@ import java.util.logging.*;
 public class TextCriteria implements SearchStrategy
 {
     private static final Logger logger = Logger.getLogger(TextCriteria.class.getName());
-    //Reads file object and returns a search result object with matching line and all lines.
-    public SearchResults matchesCriteria(File file, String pCriteria)
+
+    //Finds lines matching text criteria from all lines and returns a search result object
+    public SearchResults matchesCriteria(List<String> allLines, String pCriteria)
     {
         String text = pCriteria.substring(4);
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(file)))
+        Map<Integer, String> lineMatches = new HashMap<>();
+        
+        for(int i = 0; i < allLines.size(); i++)
         {
-            String line;
-            int lineNum = 1;
-            List<String> allLines = new ArrayList<>();
-            Map<Integer, String> lineMatches = new HashMap<>();
-            
-            while((line = reader.readLine()) != null) 
+            if(allLines.get(i).contains(text))
             {
-                allLines.add(line); //Store every line in file in allLines
-                if(line.contains(text)) //if line contains text (match) include it in lineMatches with lineNum and text
-                {
-                    lineMatches.put(lineNum, line);
-                }
-                lineNum++; 
+                lineMatches.put(i+1, allLines.get(i));
             }
-            logger.info(() -> "file read into system: Regex" + file.getName());
-            SearchResults searchResults = new SearchResults(allLines, lineMatches); //create search results object and return it
-
-            return searchResults;
-        } catch (IOException e) 
-        {
-            logger.severe("Error reading file: text");
-            e.printStackTrace();
         }
-        return null; 
+        SearchResults searchResults = new SearchResults(allLines, lineMatches);
+        logger.info("Text criteria applied to file");
+        return searchResults;
     }
 }

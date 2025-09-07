@@ -8,37 +8,24 @@ import java.util.logging.*;
 public class RegexCriteria implements SearchStrategy
 {
     private static final Logger logger = Logger.getLogger(RegexCriteria.class.getName());
-    //Reads file object and returns a search result object with matching line and all lines.
-    public SearchResults matchesCriteria(File file, String pCriteria)
+
+    //Looks for regex matches in allLines of file, returns map with line number and matching text
+    public SearchResults matchesCriteria(List<String> allLines, String pCriteria)
     {
         String regex = pCriteria.substring(4);
+        Map<Integer, String> lineMatches = new HashMap<>();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(file)))
+        for(int i = 0; i < allLines.size(); i++)
         {
-            String line;
-            int lineNumber = 1;
-            List<String> allLines = new ArrayList<>();
-            Map<Integer, String> lineMatches = new HashMap<>();
-            while((line = reader.readLine()) != null) 
-            {   
-                allLines.add(line); //add every line to the allLines field
-                Pattern p = Pattern.compile(regex);
-                Matcher m = p.matcher(line); //Look for regex matches with Pattern class
-                if(m.find()) //if match found put the line in line matches
-                { 
-                    lineMatches.put(lineNumber, line); 
-                }
-                lineNumber++;
+            Pattern p = Pattern.compile(regex);
+            Matcher m = p.matcher(allLines.get(i)); //Look for regex matches with Pattern class
+            if(m.find()) //if match found put the line in line matches
+            { 
+                lineMatches.put(i+1, allLines.get(i)); 
             }
-            logger.info(() -> "file read into system: Regex" + file.getName());
-            SearchResults searchResults = new SearchResults(allLines, lineMatches); //Create search results object and return it 
-
-            return searchResults;
-        } catch (IOException e) 
-        {
-            logger.severe("Error in file read: Regex");
-            e.getMessage();
         }
-        return null;
+        SearchResults searchResults = new SearchResults(allLines, lineMatches); //Create search results object and return it 
+        logger.info("Regex criteria applied to file"); 
+        return searchResults;
     }
 }

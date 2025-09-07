@@ -6,7 +6,7 @@ import java.util.logging.*;
 
 public class RunApplication
 {
-    public String criteria;
+    public List<String> criteriaList = new ArrayList<>();
     public String outputFormat;
 
     public void run(DirectoryComposite pRoot)
@@ -29,13 +29,30 @@ public class RunApplication
             if(userChoice == 1)
             {
                 String userCriteria;
-                do
+                List<String> criteriaList = new ArrayList<>();
+
+                System.out.print("\n\nSet new Criteria (+/-) (t/r) (text/regex):\n\nPress enter to insert new criteria, press enter on an empty line to finish.\n\n");
+               
+                while (true) 
                 {
-                    System.out.print("\n\nSet new Criteria (+/-) (t/r) (text/regex): ");
                     userCriteria = sc1.nextLine();
-                } while((userCriteria.charAt(0) != '+' && userCriteria.charAt(0) != '-') && (userCriteria.charAt(2) != 't' && userCriteria.charAt(2) != 'r') && (userCriteria.charAt(1) != ' ' && userCriteria.charAt(3) != ' '));
+                    if (userCriteria.isEmpty()) {  break; } //Break when user presses enter on an empty line 
+
+                    if (userCriteria.length() < 4 || 
+                    (userCriteria.charAt(0) != '+' && userCriteria.charAt(0) != '-') ||
+                    (userCriteria.charAt(1) != ' ') ||
+                    (userCriteria.charAt(2) != 't' && userCriteria.charAt(2) != 'r') ||
+                    (userCriteria.charAt(3) != ' ')) //force user to enter correct input format
+                    {
+                        System.out.println("Invalid format. Please re-enter.");
+                        continue; 
+                    }
+                    criteriaList.add(userCriteria);
+                }
+                userCriteria = sc1.nextLine();
+               
                 //force user to entre correct criteria ^^
-                setCriteria(userCriteria);
+                setCriteria(criteriaList);
             }
             else if(userChoice == 2)
             {
@@ -60,13 +77,13 @@ public class RunApplication
         }
     }
 
-    public void setCriteria(String pCriteria) { criteria = pCriteria; }
+    public void setCriteria(List<String> pCriteriaList) { criteriaList = pCriteriaList; }
 
     public void setOutputFormat(String pOutputFormat) { outputFormat = pOutputFormat; }
 
     public void report(DirectoryComposite root)
     {
-        root.findInclusions(criteria);
+        root.findInclusions(criteriaList);
 
         if(outputFormat.equals("count"))
             OutputCount.showCount(root," ");

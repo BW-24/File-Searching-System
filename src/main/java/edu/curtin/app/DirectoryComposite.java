@@ -57,7 +57,7 @@ public class DirectoryComposite extends FileSystemComponent
 
     //composite find function, finds lines within directory that match criteria, recurses into file objects
     @Override 
-    public void findInclusions(String pCriteria) 
+    public void findInclusions(List<String> pCriteria) 
     {
         for(FileSystemComponent fileSystemComponent : fileTree)
         {
