@@ -6,8 +6,8 @@ import java.util.logging.*;
 
 public class RunApplication
 {
-    public List<String> criteriaList = new ArrayList<>();
-    public String outputFormat;
+    private List<String> criteriaList = new ArrayList<>();
+    private String outputFormat;
 
     public void run(DirectoryComposite pRoot)
     {
@@ -77,11 +77,11 @@ public class RunApplication
         }
     }
 
-    public void setCriteria(List<String> pCriteriaList) { criteriaList = pCriteriaList; }
+    private void setCriteria(List<String> pCriteriaList) { criteriaList = pCriteriaList; }
 
-    public void setOutputFormat(String pOutputFormat) { outputFormat = pOutputFormat; }
+    private void setOutputFormat(String pOutputFormat) { outputFormat = pOutputFormat; }
 
-    public void report(DirectoryComposite root)
+    private void report(DirectoryComposite root)
     {
         root.findInclusions(criteriaList);
 

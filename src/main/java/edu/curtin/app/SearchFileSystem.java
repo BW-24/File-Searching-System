@@ -28,7 +28,7 @@ public class SearchFileSystem
         Map<Integer, String> linesMatchingAllCriteria = new HashMap<>(); //final map with included lines that match all criteria
         List<String> allLines = new ArrayList<>();
 
-        //read all lines into a list
+        //read all lines from file into a list
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) 
         { 
             String line;

@@ -5,8 +5,8 @@ import java.util.logging.*;
 
 public abstract class FileSystemComponent 
 {
-    protected File file;
+    private File file;
     
-    public  abstract void findInclusions(List<String> pCriteria);
+    public abstract void findInclusions(List<String> pCriteria);
     public abstract int count();
 }

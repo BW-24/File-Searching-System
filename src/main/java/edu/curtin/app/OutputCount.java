@@ -15,7 +15,7 @@ public class OutputCount
         {
             if (file instanceof FileLeaf leaf) 
             {
-                System.out.println(indent + "  " + leaf.getFile().getName() + ": " + leaf.count + " lines");
+                System.out.println(indent + "  " + leaf.getFile().getName() + ": " + leaf.count() + " lines");
             } 
             else if (file instanceof DirectoryComposite directory) //if dir recurse into directory
             {

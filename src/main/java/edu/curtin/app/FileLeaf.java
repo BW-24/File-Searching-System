@@ -9,9 +9,9 @@ public class FileLeaf extends FileSystemComponent
 {
     private static final Logger logger = Logger.getLogger(FileLeaf.class.getName());
     //class fields
-    public File file;
-    public Map<Integer, String> matchingCriteria;
-    public int count;
+    private File file;
+    private Map<Integer, String> matchingCriteria;
+    private int count;
 
     //setter
     public FileLeaf(File pFile) 

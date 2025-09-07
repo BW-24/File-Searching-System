@@ -7,11 +7,9 @@ import java.util.logging.*;
 public class DirectoryComposite extends FileSystemComponent
 {
     //class fields
-    public File directory;
-    public int count;
-
+    private File directory;
     private static final Logger logger = Logger.getLogger(DirectoryComposite.class.getName());
-    List<FileSystemComponent> fileTree = new ArrayList<>();
+    protected List<FileSystemComponent> fileTree = new ArrayList<>();
     //setter
     public DirectoryComposite(File pDirectory) { directory = pDirectory; }
     //getter
