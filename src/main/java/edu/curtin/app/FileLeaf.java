@@ -22,6 +22,7 @@ public class FileLeaf extends FileSystemComponent
 
     //getter
     public File getFile() { return file; }
+    public Map<Integer, String> getMatchingCriteria() { return matchingCriteria; }
 
     //finds criteria matching lines by searching file objects, sets files matching criteria field to the results fom search; map with lineNum (key) and matching text (value)
     // also sets count of matching lines to each file object
@@ -32,6 +33,11 @@ public class FileLeaf extends FileSystemComponent
         Map<Integer, String> filteredSearchResults = searchFileSystem.search(file, pCriteria); //search
         logger.info(() -> "Searching through" + this.getFile().getName());
         this.matchingCriteria = filteredSearchResults; //apply searchresults to matching criteria field of file object
+        if(this.matchingCriteria == null) //Matching criteria should not be null, even if filteredSearchResults is empty
+        {
+            logger.severe("Matching criteria is null" + this.getFile().getName());
+            throw new IllegalStateException("Matching criteria is null" + this.getFile().getName());
+        }
         this.setCount(); // apply count now that matching lines have been added to object
     }
 

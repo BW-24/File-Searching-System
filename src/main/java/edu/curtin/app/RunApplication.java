@@ -6,6 +6,7 @@ import java.util.logging.*;
 
 public class RunApplication
 {
+    private static final Logger logger = Logger.getLogger(RunApplication.class.getName());
     private List<String> criteriaList = new ArrayList<>();
     private String outputFormat;
 
@@ -44,13 +45,13 @@ public class RunApplication
                     (userCriteria.charAt(2) != 't' && userCriteria.charAt(2) != 'r') ||
                     (userCriteria.charAt(3) != ' ')) //force user to enter correct input format
                     {
+                        logger.warning("User entered invalid criteria: " + userCriteria);
                         System.out.println("Invalid format. Please re-enter.");
                         continue; 
                     }
                     criteriaList.add(userCriteria);
                 }
-                userCriteria = sc1.nextLine();
-               
+
                 //force user to entre correct criteria ^^
                 setCriteria(criteriaList);
             }

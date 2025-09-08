@@ -17,7 +17,7 @@ public class RegexCriteria implements SearchStrategy
 
         for(int i = 0; i < allLines.size(); i++)
         {
-            Pattern p = Pattern.compile(regex);
+            Pattern p = Pattern.compile(regex); //throws PatternSyntaxException itself, so faster than creating a try catch block
             Matcher m = p.matcher(allLines.get(i)); //Look for regex matches with Pattern class
             if(m.find()) //if match found put the line in line matches
             { 

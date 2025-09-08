@@ -33,9 +33,15 @@ public class SearchFileSystem
         { 
             String line;
             while((line = reader.readLine()) != null) { allLines.add(line); }
-        } catch (IOException e)
+        } 
+        catch(FileNotFoundException e)
         {
-            logger.severe("Error reading file: text" + file.getName());
+            logger.severe("File not found:" + file.getName());
+            e.getMessage();
+        }
+        catch (IOException e)
+        {
+            logger.severe(" I/O Error reading file:" + file.getName());
             e.getMessage();
         }
 
@@ -52,17 +58,17 @@ public class SearchFileSystem
             String incOrExc = Character.toString(criteria.charAt(0));
             String textOrRegex = Character.toString(criteria.charAt(2));
 
-            //Get appropriate strategies depending on criteria entered - polymorphism
+            //Get appropriate strategies depending on criteria entered
             SearchStrategy ss = SearchStrategies.get(textOrRegex);
             FilterStrategy fs = FilterStrategies.get(incOrExc);
 
             if(ss == null || fs == null)
             {
-                logger.warning("Search or filter strategy are null");
+                logger.severe("Search or filter strategy are null");
                 throw new IllegalArgumentException("Invalid Search Criteria");
             }
 
-            SearchResults getTextOrRegex = ss.matchesCriteria(allLines, criteria); //get appropriate search strategy (t/r) and store results in SearchResults object 
+            SearchResults getTextOrRegex = ss.matchesCriteria(allLines, criteria); //polymorphically call strategy and store results in SearchResults object 
             filteredSearchResults = fs.filter(getTextOrRegex); //get appropriate inc/exc strategy and store results in Map with fully filtered search results
             linesMatchingAllCriteria.keySet().retainAll(filteredSearchResults.keySet()); 
             /*^^retain elements that are in filtered search results (all included lines with current criteria)

@@ -10,6 +10,7 @@ public class DirectoryComposite extends FileSystemComponent
     private File directory;
     private static final Logger logger = Logger.getLogger(DirectoryComposite.class.getName());
     protected List<FileSystemComponent> fileTree = new ArrayList<>();
+
     //setter
     public DirectoryComposite(File pDirectory) { directory = pDirectory; }
     //getter
@@ -24,7 +25,11 @@ public class DirectoryComposite extends FileSystemComponent
         //Store dir contents in array
         File[] dirContents = dir.listFiles();
 
-        if(dirContents == null) { throw new IllegalStateException("Directory is empty."); } //stop program if directory is empty
+        if(dirContents == null) 
+        { 
+            logger.warning("Directory is null" + pDirectory);
+            throw new IllegalStateException("Directory is empty."); 
+        } //stop program if directory is empty
 
         Arrays.sort(dirContents);
     
@@ -44,10 +49,11 @@ public class DirectoryComposite extends FileSystemComponent
             else
             {
                 String name = file.getName().toLowerCase();
-                if (file.isFile() && (name.endsWith(".java") || name.endsWith(".txt") || name.endsWith(".csv"))) //maybe change
+                if (file.isFile() && (name.endsWith(".java") || name.endsWith(".txt") || name.endsWith(".csv"))) 
                 {  
                     logger.info(() -> "loading" + file.getName() + "into system");
-                    fileTree.add(new FileLeaf(file)); //create file object
+                    FileLeaf fileLeaf = new FileLeaf(file);
+                    fileTree.add(fileLeaf); //create file object
                 }
             }
         }
